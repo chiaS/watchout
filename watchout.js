@@ -1,8 +1,8 @@
 // start slingin' some d3 here.
 // Setup the game board
 var gameOptions = {
-  height: 1080,
-  width: 1920,
+  height: $(window).height(),
+  width: $(window).width(),
   nEnemies: 30,
   padding: 20
 };
@@ -29,10 +29,10 @@ var updateBestScore = function() {
   return d3.select('#best-score').text(gameStats.bestScore.toString());
 };
 
-updateBestScore();
+//updateBestScore();
 
 
-function createEnemies (nEnemies) {
+function Enemies (nEnemies) {
   var enemiesData = [];
 
   for (var i = 0; i < nEnemies; i++) {
@@ -41,8 +41,6 @@ function createEnemies (nEnemies) {
   var enemies = gameBoard.selectAll('circle')
       .data(enemiesData)
       .enter().append('circle')
-  //    .attr('cx', function() { return Math.random() * gameOptions.width; })
-   //   .attr('cy', function() { return Math.random() * gameOptions.height; })
       .attr('r', function(d) { return d; });
   var colors = ['#F22233', '#F2F2F2', '#C0B5FD', '#9CBF1B', '#F26241']
   setInterval(function() {
@@ -50,24 +48,27 @@ function createEnemies (nEnemies) {
     enemies.attr('cy', function() {
       return Math.random() * gameOptions.height;
     });
-    enemies.transition().duration(2000)
+    enemies.transition().duration(2500)
                         .attr('cx', function() {
-                          return Math.random() * gameOptions.width + 100;
+                          return Math.random() * gameOptions.width - 100;
                         })
                         .attr('cy', function() {
-                          return Math.random() * gameOptions.height + 100;
+                          return Math.random() * gameOptions.height - 100;
                         })
                         .style('fill', function(d) {
                           return colors[Math.floor(Math.random() * 5)];
                         })
-                        .transition().duration(2000);
+                        .transition().duration(2500);
 
-  }, 1000);
+  }, 2000);
 };
 
-createEnemies(50);
+var enemies = new Enemies(50);
 
-var createPlayer = function() {
+var Player = function() {
+  var x = axes.x(50);
+  var y = axes.y(50);
+  var fill = 'green';
   var path = 'M15,8c0,0.552-0.447,1-1,1s-1-0.448-1-1s0.447-1,1-1S15,7.448,15,8z M11,8c0-0.552-0.448-1-1-1S9,7.448,9,8s0.448,1,1,1\
   S11,8.552,11,8z M10,10.093C10.592,11.639,12,12,12,12s1.408-0.361,2-1.907c-1.148-0.332-2-0.953-2-0.953S11.149,9.761,10,10.093z\
    M18.051,21.039H19c0.529,0,0.961,0.432,0.961,0.961S19.529,22.961,19,22.961h-0.008C18.992,22.975,19,22.986,19,23\
@@ -83,14 +84,18 @@ var createPlayer = function() {
 
   gameBoard.append('svg:path')
            .attr('d', path)
-           .attr('transform', 'translate(' + 960 + ',' + 530 + ')')
-           .attr('fill', 'green');
+           .attr('transform', 'translate(' + x + ',' + y + ')')
+           .attr('fill', fill);
 
-  var x = 0;
-  var y = 0;
-         };
+};
 
-createPlayer();
+Player.prototype.setupDragging = function(){
+   this.drag = d3.behavior.drag().on('drag', function(){
+    alert('drag');
+   });
+}
+var player = new Player();
+player.setupDragging();
 
 
 
