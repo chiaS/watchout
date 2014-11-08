@@ -3,5 +3,8 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
-
-
+.penguin {
+  width: 100px;
+  height: 100px;
+  color: green;
+}
