@@ -2,3 +2,12 @@
 
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
+
+svg{
+  border: 2px solid #9CBF1B;
+  border-radius: 3px;
+}
+
+svg .penguin {
+  cursor: pointer;
+}
